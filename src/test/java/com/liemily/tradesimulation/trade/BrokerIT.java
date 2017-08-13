@@ -5,7 +5,7 @@ import com.liemily.tradesimulation.account.AccountService;
 import com.liemily.tradesimulation.account.exceptions.InsufficientFundsException;
 import com.liemily.tradesimulation.accountstock.AccountStock;
 import com.liemily.tradesimulation.accountstock.AccountStockService;
-import com.liemily.tradesimulation.broker.BrokerController;
+import com.liemily.tradesimulation.broker.Broker;
 import com.liemily.tradesimulation.stock.Stock;
 import com.liemily.tradesimulation.stock.StockService;
 import com.liemily.tradesimulation.stock.exceptions.InsufficientStockException;
@@ -31,11 +31,11 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TradeServiceTest {
-    private static final Logger logger = LogManager.getLogger(TradeServiceTest.class);
+public class BrokerIT {
+    private static final Logger logger = LogManager.getLogger(BrokerIT.class);
 
     @Autowired
-    private BrokerController brokerController;
+    private Broker broker;
     @Autowired
     private StockService stockService;
     @Autowired
@@ -86,7 +86,7 @@ public class TradeServiceTest {
         volume = 10;
         for (Trade.TradeType tradeType : Trade.TradeType.values()) {
             Trade trade = new Trade(username, stockSymbol, volume, tradeType);
-            tradeId = brokerController.process(trade);
+            tradeId = broker.process(trade);
         }
     }
 
@@ -94,14 +94,14 @@ public class TradeServiceTest {
     public void testProcessInvalidBuyDueToInsufficientCredits() throws Exception {
         volume = 100;
         Trade trade = new Trade(username, stockSymbol, volume, Trade.TradeType.BUY);
-        tradeId = brokerController.process(trade);
+        tradeId = broker.process(trade);
     }
 
     @Test
     public void testProcessValidBuy() throws Exception {
         volume = 1;
         Trade trade = new Trade(username, stockSymbol, volume, Trade.TradeType.BUY);
-        tradeId = brokerController.process(trade);
+        tradeId = broker.process(trade);
 
         Trade writtenTrade = tradeService.findOne(tradeId);
         assertNotNull(writtenTrade);
@@ -117,7 +117,7 @@ public class TradeServiceTest {
         volume = 1;
         accountStockService.addStock(username, stockSymbol, volume);
         Trade trade = new Trade(username, stockSymbol, volume, Trade.TradeType.SELL);
-        long tradeId = brokerController.process(trade);
+        long tradeId = broker.process(trade);
 
         Trade writtenTrade = tradeService.findOne(tradeId);
         assertNotNull(writtenTrade);
