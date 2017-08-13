@@ -1,14 +1,15 @@
-package com.liemily.tradesimulation.trade;
+package com.liemily.tradesimulation.broker;
 
 import com.liemily.tradesimulation.account.Account;
 import com.liemily.tradesimulation.account.AccountService;
 import com.liemily.tradesimulation.account.exceptions.InsufficientFundsException;
 import com.liemily.tradesimulation.accountstock.AccountStock;
 import com.liemily.tradesimulation.accountstock.AccountStockService;
-import com.liemily.tradesimulation.broker.Broker;
 import com.liemily.tradesimulation.stock.Stock;
 import com.liemily.tradesimulation.stock.StockService;
 import com.liemily.tradesimulation.stock.exceptions.InsufficientStockException;
+import com.liemily.tradesimulation.trade.Trade;
+import com.liemily.tradesimulation.trade.TradeService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.After;
